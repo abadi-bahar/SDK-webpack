@@ -1,0 +1,81 @@
+@media screen and (min-aspect-ratio: 13/9) {
+
+	.referal-link{
+	 font-size: 4vh !important;
+}
+
+           
+body {font-size:4vh !important;		
+		   }
+
+
+.timer,.point{
+	font-size:0.9rem;
+	 }
+
+
+
+
+.ok-btn , .cancel-btn{
+	font-size:0.8rem;
+}
+
+
+.cancel-btn
+{
+	color:#000000;
+	background-color:#c6c2b6;
+}
+
+.star-img
+	{
+		width:60px !important;
+	}
+	
+.money-bag-img
+	{
+		width:10% !important;
+	}
+	
+	.money-bag{
+	width:10% !important;
+	      }
+
+.game-header
+{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+}
+
+	.next-level-desc
+	{
+		width:calc(70% - 130px) !important;
+		width:-webkit-calc(70% - 130px) !important;
+		text-align: center !important;
+		font-size: 1rem !important;
+	}
+
+	.phoenix
+	{
+		width: 20% !important;
+	}
+
+	.moon
+	{
+
+		margin: 30px auto 30px 10% !important;
+	}
+
+	.level-map
+	{
+		max-height: 30vh !important;
+		margin-top: 10px !important;
+	}
+}
+
+
+
+
+

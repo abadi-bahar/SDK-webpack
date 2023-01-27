@@ -1,0 +1,888 @@
+@font-face {
+  font-family: iransansB;
+  src: url("https://games.baziigram.com/SDK/fonts/IRANSansWebFa_Bold.924be0f.woff2");
+}
+@font-face {
+  font-family: iransansM;
+  src: url("https://games.baziigram.com/SDK/fonts/IRANSansWebFa_Medium.8451859.woff2");
+}
+
+@font-face
+{
+	font-family:bKamran;
+	src : url("https://games.baziigram.com/SDK/fonts/ZahraRoosta.ttf")
+}
+
+@font-face
+{
+	font-family:merriweather;
+	src : url("https://games.baziigram.com/SDK/fonts/merriweather.light.ttf")
+}
+
+@font-face
+{
+	font-family:lalezar;
+	src : url("https://games.baziigram.com/SDK/fonts/ZahraRoosta.ttf")
+}
+
+           
+body { margin: 0; 
+	  touch-action: pan-x pan-y;
+	  width:100%;
+	  height:100%;
+	  padding:0px;
+	  position:fixed;
+	  top:0px;
+	  left:0px;
+	  overflow:hidden;			
+	  font-size:5vw;
+		   }
+
+.play-button , .replay-button{
+    height: 50px;
+    width: 50px;
+	background:url("https://games.baziigram.com/SDK/images/playButton2.png") no-repeat center center;
+	display:block;
+	margin:auto;
+    background-size: 100% 100%;
+    border-width: 0px;
+    outline: none;
+    transition: all 300ms;
+	background-color:transparent;
+	transition: 0.2s all;
+     }
+
+.replay-button
+{
+	background:url("https://games.baziigram.com/SDK/images/playButton2.png") no-repeat center center;
+	 background-size: 100% 100%;
+  }
+
+
+.play-button:active,.play-button:focus{
+     transform: scale(0.98);
+            }
+
+ @keyframes press {
+	0% {
+		 transform: scale(1);
+	}
+	50% {
+		 transform: scale(0.65);
+	}
+	100% {
+		 transform: scale(1);
+	}
+}
+
+.start-playing
+    {
+    position: fixed;
+    top: 0px;
+    left:0px;
+    height: 100%;
+    width:100%;
+    background-color:rgba(0, 0, 0, 0.5);
+     z-index: 99999;
+
+    }
+
+.help{
+	 position: absolute;
+    width:90%;
+	max-width:350px;
+    left:50%;
+    top: 50%;
+	transform:translate(-50%,-50%);
+    text-align: center;
+    color: inherit;
+    padding:85px 20px ;
+	border-radius:8px;
+	border-radius:15px;
+	background-color: #090012;
+	color: #ffffff;
+	border: 1px solid #e600da;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+      }
+
+
+
+.timer,.point{
+	background-image: linear-gradient(#290224 ,#3d0536 , #5e0d54 , #6e1362 ,  #993f8e ) !important;
+	border-radius: 17px;
+	color: #ffffff !important;
+	width:150px;
+    height: 40px;
+    color:inherit;
+    padding:5px 5px;
+	text-align:center;
+	z-index:0;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	 }
+.timer:before,.point:before{
+	background-color: initial !important;
+	background-image: linear-gradient(#fff 0, rgba(255, 255, 255, 0) 100%) !important;
+	border-radius: 125px !important;
+	content: "";
+	height: 50%;
+	left: 4%;
+	opacity: .5;
+	position: absolute;
+	top: 0;
+	transition: all .3s;
+	width: 92%;
+}
+
+.timer{
+	position:absolute;
+	top:10px;
+	left:10px;
+}
+.point{
+	position:absolute;
+	top:10px;
+	right:10px;
+}
+
+
+.gameOver{
+	position: fixed;
+    top: 0px;
+    left:0px;
+    height: 100%;
+    width:100%;
+	 background-color:#efeeeb;
+    z-index: 99999;
+	display:none;
+	overflow:hidden;
+	padding:8px;
+	color:#ffffff;
+	background-image: linear-gradient(#712773 , #2a1b3d);
+	font-size:1rem;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+
+
+
+@-webkit-keyframes wiggle
+{
+    0% {-webkit-transform: rotateZ(6deg);}
+    50% {-webkit-transform: rotateZ(-6deg);}
+    100% {-webkit-transform: rotateZ(6deg);}
+}
+
+@keyframes wiggle
+{
+    0% {transform: rotateZ(6deg);}
+    50% {transform: rotateZ(-6deg);}
+    100% {transform: rotateZ(6deg);}
+}
+.wobby{
+	 -webkit-animation: wiggle 0.2s ease infinite;
+    animation: wiggle 0.2s ease infinite;
+}
+
+
+.baziigram-menu-icon
+{
+width: 50px;
+height: 50px;
+position: absolute;
+bottom: 0px;
+right: 0px;
+z-index: 5 !important;
+}
+
+.show-menu
+{
+	display: block;
+}
+
+
+#baziigramMenu
+{
+	position: fixed;
+	bottom: 8px;
+	right:8px;
+	width: 50px;
+	height: 50px;
+}
+
+#leaderboardMenu
+{
+	background: url('https://games.baziigram.com/SDK/images/leaderboard2.png') no-repeat center center;
+	background-size: 100% 100%;
+
+}
+
+#profileMenu
+{
+	background: url('https://games.baziigram.com/SDK/images/empty.png') no-repeat center center;
+	background-size: 100% 100%;
+}
+
+#leaderboardMenu , #profileMenu , #leaderboardMenu:focus , #profileMenu:focus , #leaderboardMenu:active , #profileMenu:active
+{
+	position: absolute;
+	width: 50px;
+	height: 50px;
+	bottom: 0px;
+	right: 0px;
+	border:none !important;
+	border-width:0px !important;
+	outline:0px !important;
+	outline:none !important;
+}
+
+.show-menu ~ #profileMenu
+{
+	bottom: 58px !important;
+	transition: all .5s;
+}
+
+.show-menu ~ #leaderboardMenu
+{
+	bottom: 116px !important;
+	transition: all .5s;
+}
+
+#dialogContainer{
+	position:absolute;
+	width:90%;
+	max-width:350px;
+    left:50%;
+    top: 50%;
+	max-height:85%;
+	overflow:auto;
+	transform:translate(-50%,-50%);
+	transform-origin:center;
+	color:inherit;
+	z-index:99999;
+	direction:rtl;
+	border-radius:8px;
+	text-align: center;
+	background-color: #090012;
+	color: #ffffff;
+	border: 1px solid #e600da;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+[lang=en]{
+	font-family:merriweather !important;
+	letter-spacing: 0.09rem !important;
+	line-height: 25px !important;
+	font-size: 0.9rem !important;
+}
+
+[lang=fa]{
+	font-family:bKamran !important;
+	line-height: 30px !important;
+}
+
+
+
+.profile-image-options{
+	align-self: flex-start;
+	position: relative;
+    height: auto;
+	width:28%;
+	margin:8px 2%;
+	border-radius:50%;
+}
+
+.plain-dialog{
+background-color:rgba(170, 141, 107,0.8) !important;	
+	background-image:none !important;
+}
+.hide-dialog {
+ -webkit-animation: hide-dialog 500ms ease-in-out 1 alternate;
+  -moz-animation: hide-dialog 500ms ease-in-out 1 alternate;
+  animation: hide-dialog 500ms ease-in-out 1 alternate;
+	animation-fill-mode:forwards;
+	display:block !important;
+	
+}
+.show-dialog{
+	-webkit-animation: show-dialog 500ms ease-in-out 1 alternate;
+  -moz-animation: show-dialog 500ms ease-in-out 1 alternate;
+  animation: show-dialog 500ms ease-in-out 1 alternate;
+	animation-fill-mode:forwards;
+	display:block !important;
+}
+
+@-webkit-keyframes hide-dialog {
+  from {
+	  transform-origin:center;
+	transform:translate(-50%,-50%) scale(1) ;
+	  
+     }
+  to {
+	  transform-origin:center;
+	 transform:translate(-50%,-50%) scale(0) ;
+	  
+   }
+}
+
+@-webkit-keyframes show-dialog {
+  from {
+	  transform-origin:center;
+	transform:translate(-50%,-50%) scale(0) ;
+     }
+  to {
+	  transform-origin:center;
+	 transform:translate(-50%,-50%) scale(1) ;
+   }
+}
+
+@-webkit-keyframes spin
+{
+    0% {-webkit-transform: rotateZ(0deg) scale(0);}
+    25% {-webkit-transform: rotateZ(360deg) scale(0.25);}
+	50% {-webkit-transform: rotateZ(720deg) scale(0.5);}
+	75% {-webkit-transform: rotateZ(1080deg) scale(0.75);}
+	100% {-webkit-transform: rotateZ(1440deg) scale(1);}
+	
+}
+
+@keyframes spin
+{
+    0% {transform: rotateZ(0deg) scale(0);}
+    25% {transform: rotateZ(360deg) scale(0.25);}
+	50% {transform: rotateZ(720deg) scale(0.5);}
+	75% {transform: rotateZ(1080deg) scale(0.75);}
+	100% {transform: rotateZ(1440deg) scale(1);}
+	
+}
+
+
+.cheer{
+	position:absolute;
+	width:30px;
+	top:-100%;
+	z-index:0;
+	-webkit-animation: cheer 1s ease-in-out 1 alternate;
+  -moz-animation: cheer 1s ease-in-out 1 alternate;
+  animation: cheer 1s ease-in-out 1 alternate;
+	animation-fill-mode:forwards;
+	
+}
+@-webkit-keyframes cheer {
+  0% {
+  
+	  display:block;
+  }
+ 
+  
+  100% {
+	  transform:translateY(200%);
+	  display:none;
+   
+  }
+
+}
+
+@keyframes cheer {
+  0% {
+  
+	  display:block;
+  }
+ 
+  
+  100% {
+	  top:100%;
+	  display:none;
+   
+  }
+
+}
+
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #919191;
+  opacity: 0.9; /* Firefox */
+}
+
+
+.leader-board-item{
+	background-color:transparent;
+	padding:30px 20px 30px 50px;
+	font-size:60px;
+	width:700px;
+   border-bottom:solid 4px #8a4a1c;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+
+button{
+	transition: 0.2s all;
+}
+
+button:focus , button:active{
+	border:none !important;
+	border-width:0px !important;
+	outline:0px !important;
+	outline:none !important;
+	transform: scale(0.98);
+}
+
+
+.dialog-title{
+    background: url('https://games.baziigram.com/SDK/images/play.png') no-repeat center center;
+	background-size: 100% 100%;
+	min-width:100px;
+	height:240px;
+	color:white;
+	font-size:60px;
+	margin:auto;
+	text-align:center;
+	margin-top:-100px;
+    padding-top:60px;
+	max-width:580px;
+}
+.ok-btn , .cancel-btn{
+	height:40px;
+	border:none;
+	margin:16px auto;
+	display:block;
+	outline: none;
+	color:#ffffff;
+	background-color:#fa00bb !important;
+	border-radius:8px;
+	padding: 5px 8px;
+	content: "";
+	font-size:0.9rem;
+	position: relative;
+	min-width: 100px;
+	font-family: inherit;
+}
+
+.cancel-btn
+{
+	background-color: #a4b3b6 !important;
+	color: #fa00bb !important;
+}
+
+.ok-btn:before , .cancel-btn:before{
+	background-color: initial;
+	background-image: linear-gradient(#fff 0, rgba(255, 255, 255, 0) 100%);
+   border-radius: 125px !important;
+  content: "";
+  height: 50%;
+  left: 4%;
+  opacity: .5;
+  position: absolute;
+  top: 0;
+  transition: all .3s;
+  width: 92%;
+}
+
+.cancel-btn
+{
+	background-color:#c6c2b6;
+}
+.close-btn
+{
+	background-image: url("https://games.baziigram.com/SDK/images/close2.png");
+	background-size: 100% 100%;
+	width:40px;
+	height:40px;
+	position:absolute;
+	left:5px;
+	top:5px;
+	border:none;
+	border-width: 0px;
+    outline: none;	
+	background-color:transparent;
+}
+
+.loader {
+  border: 6px solid #f3f3f3; 
+  border-top: 6px solid #42f5f2;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 2s linear infinite;
+  margin:8px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.prize-item
+{
+	border-bottom:1px solid #c6c2b6;
+	padding:4px;
+	font-size:0.9rem;
+	margin:8px auto ;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.prize-logo
+{
+	border-radius:50%;
+	height:55px;
+	width:55px;
+	margin-left:5px;
+	
+}
+
+.money-bag{
+	width:25%;
+	margin: 40px auto 16px;
+	animation:money-bag 400ms linear;
+	transform-origin: bottom;
+}
+@keyframes money-bag
+	{
+  0%   { transform: scale(1,1);}
+  25%  { transform: scale(1.1,.9);}
+  50%  { transform: scale(.9,1.1);}
+  75%  { transform: scale(1.05,.95); }
+  100%  { transform: scale(1,1); }
+    }
+
+.dropping-coin{
+	width:22px;
+	height:22px;
+	left:50%;
+	position:absolute;
+	top:-50px;
+	animation:fall-down 100ms linear;
+	animation-fill-mode:forwards;
+}
+
+@keyframes fall-down
+	{
+  0%   { transform: translate(-50%,0);display:block;visibility:visible;}
+  100%  { transform:  translate(-50%,100px);visibility:hidden; }
+    }
+
+.glow-green{
+	text-align:center;
+	direction:rtl;
+	font-size:40px;
+}
+
+.referal-link{
+	text-align:center;
+	border-radius:8px;
+	background-color:#e0ded7;
+	width: 90%;
+    margin: 0px auto;
+    padding: 8px 16px;
+    font-size: 4vw;
+	line-height: 25px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.star-img{
+	margin:16px auto;
+	width:30%;
+}
+
+
+
+.error-txt
+{
+	color:red;
+	font-size:0.9rem;
+}
+
+.jungle
+{
+  position: absolute;
+  bottom: 0px;
+  left:0px;
+  width: 100%;
+  z-index: 1;
+}
+
+.moon
+{
+  width: 30%;
+  max-width: 100px;
+  animation: glow-moon 4s linear;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  border-radius: 75px;
+  display: block;
+  margin: 30px auto 30px 30px;
+  position: relative;
+  z-index: 0;
+}
+
+@keyframes glow-moon
+{
+  0%   {
+    box-shadow: 0 0 20px #fff, 0 0 20px #fff, 0 0 20px #deded5, 0 0 20px #deded5, 0 0 20px #deded5, 0 0 20px #deded5, 0 0 20px #deded5;
+  }
+  100% {
+     box-shadow: 0 0 20px #fff, 0 0 30px #deded5, 0 0 40px #deded5, 0 0 50px #deded5, 0 0 60px #deded5, 0 0 70px #deded5, 0 0 80px #deded5;
+
+  }
+}
+
+.phoenix
+{
+  position:absolute;
+  top:40%;
+  right:16px;
+  width: 30%;
+  max-width: 200px;
+  animation-name: float ;
+  animation-duration: 4s;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  background-color: transparent;
+  z-index: 2;
+}
+
+@keyframes float {
+  0% {
+    ] transform: translatey(0px);
+  }
+ 
+  50% {
+    transform: translatey(-20px);
+  }
+  100% {
+    transform: translatey(0px);
+  }
+}
+
+#gameOverContent{
+	z-index:1;
+	position:relative;
+	display: none;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	overflow: auto;
+
+}
+
+#yourCoins
+{
+	font-size:2rem;
+	margin:8px auto;
+}
+
+.baziigram-input {
+	direction: rtl;
+	width: 96%;
+	color: #ffffff;
+	border: 1px solid #e600da;
+	height: 40px;
+	border-radius: 5px;
+	padding: 0px 2%;
+	font-size: 0.9rem;
+	padding-top: 10px;
+	margin:0px auto;
+	background: transparent;
+	position: relative;
+	z-index: 1;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.input-container {
+	max-width: 300px;
+	margin: 16px auto;
+	display: block;
+	position: relative;
+	top: 0;
+	width: 90%;
+	z-index: 0;
+}
+
+.input-container > label {
+	top: 8px;
+	position: absolute;
+	background-color: #090012;
+	padding: 0px 5px;
+	transition: 0.2s;
+	pointer-events: none;
+	color: #a4b3b6;
+	font-size: 0.8rem;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.baziigram-input:focus,
+.baziigram-input:active {
+	color: #ffffff ;
+	border: 1px solid #e600da;
+	background:transparent !important;
+	transition: all 0.3s ease-in;
+	height: 40px;
+	padding-top: 15px;
+	outline: 0px !important;
+	outline: none !important;
+	-webkit-appearance: none;
+	box-shadow: none;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.baziigram-input:focus ~ label,
+.baziigram-input:active ~ label {
+	position: absolute;
+	top: -12px;
+	color: #e600da;
+	transition: all 1s;
+	transition: all;
+	transition-duration: 300ms;
+	transition-delay: 0s;
+	margin-bottom: 0px;
+	z-index: 1;
+}
+
+.baziigram-input:not(:placeholder-shown) ~ label {
+	position: absolute;
+	top: -12px;
+	color: #e600da;
+	margin-bottom: 0px;
+	font-size: 0.8rem;
+	justify-content: space-between;
+	z-index: 1;
+}
+
+.baziigram-input:not(:placeholder-shown) {
+	height: 50px;
+	padding-top:8px ;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.baziigram-input:invalid,
+.baziigram-input:focus:invalid {
+	color: #ffffff;
+	border-color: #ff0000;
+}
+
+.input-error-text {
+	color: red;
+	font-size: 0.7rem;
+	width: 95%;
+	margin: 6px auto;
+	padding:0px 3px;
+	display: none;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+
+.right-label
+{
+	right: 15px;
+}
+
+.left-label
+{
+	left: 15px;
+}
+
+.profile-image
+{
+	width: 20%;
+	margin: 10px auto 10px auto;
+	display: block;
+	border-radius: 50%;
+}
+
+.logo-container
+{
+	height:60px;
+	width:60px;
+}
+.gold
+{
+	background:url("https://games.baziigram.com/SDK/images/gold.png") no-repeat center center;
+	background-size: 100% 100%;
+	padding: 17px 14px 11px 14px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.silver
+{
+	background:url("https://games.baziigram.com/SDK/images/silver.png") no-repeat center center !important;
+	background-size: 100% 100% !important;
+	padding: 17px 14px 11px 14px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.bronze
+{
+	background:url("https://games.baziigram.com/SDK/images/bronze.png") no-repeat center center !important;
+	background-size: 100% 100% !important;
+	padding: 17px 14px 11px 14px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.leader-board-logo
+{
+	border-radius:50%;
+	height:100%;
+	width:100%;
+	display: block;
+	margin: auto;
+
+}
+
+
+.next-level-desc
+{
+	width:95%;
+	word-wrap:break-word;
+	margin:8px auto;
+	text-align: right;
+	direction: rtl;
+	font-size: 2vh;
+}
+
+.replay-button
+{
+	margin-right: 10% !important;
+	width: 15vw !important;
+	height: 15vw !important;
+	max-height: 50px !important;
+	max-width: 50px !important;
+}
+
+.level-map
+{
+	max-height: calc((100vh - 30vw)/3);
+}
