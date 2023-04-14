@@ -102,15 +102,7 @@ window.removeBanner = function(action)
 	state.setState({startTime : new Date().getTime()})
 	window.isStopped=false
 	state.moduleSettings.help.startAction();
-	let cb = function(data){
-		if(data)
-		{
-			state.setState({user:{...state.user,...data}})
-			localStorage.setItem('user',JSON.stringify({...state.user,...data}))
-			window.top.postMessage(state.user,"https://baziigram.com")
-		}
-	}
-	api.get(null, AppConfig.apiUrls.GetUserProfile, cb)
+
 	try{
 	 gameanalytics .GameAnalytics.setEnabledInfoLog(true);
      gameanalytics.GameAnalytics.addProgressionEvent(gameanalytics.EGAProgressionStatus.Start, state.gameId, null, null, state.user);

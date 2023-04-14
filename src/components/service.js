@@ -18,39 +18,31 @@ get=(body, url, cb = ()=>{})=>{
      fetch(AppConfig.apiBaseUrl + url + this.createQueryString(body),
        {
         method: "GET",
-        headers: {'Authorization': this.state.user.token ,  'Language':this.language}
+        headers: {'Authorization':"Bearer " + this.state.user.accessToken ,  'Language':this.language}
         }).then((response)=> {
             Alert.loading(false)
             if (response) {
                 switch (response.status) {
                     case 401:
 						if (AppConfig.excludingURLs.indexOf(url)==-1)
-						{this.queue.push({api: this.get, arguments: {body, url, cb}});
-                        this.login.showLoginNode();
-						}
-                        return response.json();
+						this.unAthorizationHandler({api: this.get, arguments: {body, url, cb}});
+
+                        return ;
 
                     case 204:
                         cb();
-                        return response.body;
+                        return ;
 
 					case 200: case 400:
-                        return response.json();
+                        return this.parseResponse(response,cb);
 					
 					default:
-						return response.body;
+						return ;
 
                 }
             }
 
-   }).then((data)=>{
-            if( data.code==undefined || data.code==200  || AppConfig.excludingURLs.indexOf(url)>-1)
-            return cb(data);
-			
-			else if(AppConfig.excludingURLs.indexOf(url)==-1 && data.message && data.code != 401)
-				return alert(data.message);	
-
-        }).catch(error => {
+   }).catch(error => {
             Alert.loading(false)
             alert(error.message || error);
         })
@@ -64,7 +56,7 @@ post=(body, url, cb)=>{
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': this.state.user.token,
+                    'Authorization':"Bearer " + this.state.user.accessToken,
                      'Language':this.language
                 },
                 body: JSON.stringify(body)
@@ -74,32 +66,23 @@ post=(body, url, cb)=>{
                 switch (response.status) {
                     case 401:
 						if (AppConfig.excludingURLs.indexOf(url)==-1)
-						{this.queue.push({api: this.post, arguments: {body, url, cb}});
-                        this.login.showLoginNode()
-						}
-                        return response.json();
+						this.unAthorizationHandler({api: this.post, arguments: {body, url, cb}});
+
+                        return ;
 
                     case 204:
                         cb();
-                        return response.body;
+                        return ;
 
                     case 200: case 400:
-                        return response.json();
+                        return this.parseResponse(response,cb);
 						
 					default:
-						return response.body
+						return
 
                 }
             }
 
-        }).then((data)=>{
-
-            if(data.code == undefined || data.code==2000 || data.code==1000 || AppConfig.excludingURLs.indexOf(url)>-1)
-            return cb(data);
-			
-			else if(AppConfig.excludingURLs.indexOf(url)==-1 && data.message && data.code != 401)
-				return alert(data.message);	
-			
         }).catch(error => {
             Alert.loading(false)
             alert(error.message || error);
@@ -113,7 +96,7 @@ patch=(body, url, cb)=>{
                 method: "PATCH",
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': this.state.user.token,
+                    'Authorization':"Bearer " + this.state.user.accessToken,
                      'Language':this.language
                 },
                 body: JSON.stringify(body)
@@ -122,33 +105,25 @@ patch=(body, url, cb)=>{
             if (response) {
                 switch (response.status) {
                     case 401:
-						if (AppConfig.excludingURLs.indexOf(url)==-1){
-                        this.queue.push({api: this.patch, arguments: {body, url, cb}});
-                        this.login.showLoginNode()
-						}
-                        return response.json();
+						if (AppConfig.excludingURLs.indexOf(url)==-1)
+                        this.unAthorizationHandler({api: this.patch, arguments: {body, url, cb}});
+
+                        return ;
 
                     case 204:
                         cb();
-                        return response.body;
+                        return ;
 
                     case 200: case 400:
-                        return response.json();
+                        return this.parseResponse(response,cb);
 						
 					default:
-						return response.body
+						return
 
                 }
             }
 
-  }).then((data)=> {
-           if(data.code == undefined  || AppConfig.excludingURLs.indexOf(url)>-1)
-            return cb(data);
-			
-			else if(AppConfig.excludingURLs.indexOf(url)==-1 && data.message && data.code != 401)
-				return alert(data.message);		
-
-        }).catch(error => {
+  }).catch(error => {
             Alert.loading(false)
             alert(error.message || error);
         })
@@ -170,5 +145,56 @@ createQueryString=(params)=>{
         return ""
     }
 
+unAthorizationHandler=(request , retryCounter=0)=>{
+        if(request != null)
+        this.queue.push(request);
+
+        if(retryCounter<3 && this.state.user.refreshToken)
+        {
+        this.post({"RefreshToken":this.state.user.refreshToken},AppConfig.apiUrls.RefreshToken,(data)=>{
+        if(data.status == 200 || data.code==200)
+           {let u = {...this.state.user,...{"accessToken":data.accessToken ,"refreshToken":data.refreshToken }}
+           this.state.setState({user:u})
+           localStorage.setItem('user',JSON.stringify(u))
+            window.top.postMessage(this.state.user,"https://baziigram.com")
+             if(this.queue.length>0)
+            	{
+            	document.getElementById('dialogContent').innerHTML=""
+            	setTimeout(()=>{
+            	let item = this.queue[this.queue.length-1];
+            	item.api(item.arguments.body,item.arguments.url,item.arguments.cb);
+            	},1000)
+
+             }
+           }
+
+        else if(data.status != 200 && retryCounter<3)
+        return this.unAthorizationHandler(null , retryCounter+1)
+
+         else
+         this.login.showLoginNode();
+
+                   })
+        }
+
+        else
+        this.login.showLoginNode();
+
+    }
+
+parseResponse=(res,cb)=>
+{
+res.json().then((data)=>{
+if(data.code==400 && data.message)
+      return alert(data.message);
+
+  else
+  return cb(data)
+
+    }).catch(error => {
+   Alert.loading(false)
+   alert(error.message || error);
+  })
+}
 
 }

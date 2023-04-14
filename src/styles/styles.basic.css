@@ -505,3 +505,72 @@ a.text-dark:hover, a.text-dark:focus {
 {
 flex-grow: 1 !important;
 }
+
+@keyframes arrow_down_up {
+    0%   { transform: scale(1,1) translateY(0) rotate(45deg);
+        -webkit-transform:scale(1,1) translateY(0) rotate(45deg);
+    }
+    10%  { transform: scale(1.1,.9) translateY(0) rotate(45deg);
+        -webkit-transform: scale(1.1,.9) translateY(0) rotate(45deg);
+    }
+    30%  { transform: scale(.9,1.1)   translateY(-12px) rotate(45deg);
+        -webkit-transform: scale(.9,1.1)   translateY(-12px) rotate(45deg);
+    }
+    50%  { transform: scale(1.05,.95) translateY(0) rotate(45deg);
+        -webkit-transform: scale(1.05,.95) translateY(0) rotate(45deg);
+    }
+    58%  { transform: scale(1,1) translateY(-7px) rotate(45deg);
+        -webkit-transform: scale(1,1) translateY(-7px) rotate(45deg);
+    }
+    65%  { transform: scale(1,1) translateY(0) rotate(45deg);
+        -webkit-transform: scale(1,1) translateY(0) rotate(45deg);
+    }
+    100% { transform: scale(1,1) translateY(0) rotate(45deg);
+        -webkit-transform: scale(1,1) translateY(0) rotate(45deg);
+    }
+}
+
+.arrow {
+    border: solid #0ec7be;
+    border-width: 0 4px 5px 0;
+    display: inline-block;
+    padding: 6px;
+    border-radius: 2px;
+
+}
+
+
+
+[expand="true"] > .arrow{
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+}
+
+[expand="false"] > .arrow{
+    animation: arrow_down_up 1s ease-in;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    -webkit-animation: arrow_down_up 1s ease-in;
+    -webkit-animation-fill-mode: forwards;
+    -webkit-animation-iteration-count: infinite;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+}
+
+[expand="false"] ~ .options
+{
+    height: 0px;
+    overflow: hidden;
+}
+
+[expand="true"] ~ .options
+{
+    height:auto ;
+    transition: height 1s;
+    overflow: auto;
+}
+
+.options ~ .options
+{
+    border-top: 1px solid #0ec7be;
+}

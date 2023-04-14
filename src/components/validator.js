@@ -8,9 +8,24 @@ export  function otpValidator(value)
     return value.length==5
 }
 
-export function userNameValidator(value)
+export function nameValidator(value)
 {
     return value.length>0
+}
+
+export function emailValidator(value)
+{
+ if (!value || value.length < 5) {
+        return false;
+    }
+    var re =
+        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(value).toLowerCase());
+}
+
+export function userNameValidator(value)
+{
+    return mobileValidator(value) || emailValidator(value)
 }
 
 

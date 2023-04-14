@@ -1,7 +1,7 @@
 import {AppConfig} from "./config.js"
 import Dialog from "./dialog.js"
 import Input from "./input.js"
-import {userNameValidator , otpValidator , mobileValidator} from "./validator.js"
+import {userNameValidator  , otpValidator , nameValidator} from "./validator.js"
 import {padLeft,generateUUid} from "./Util.js"
 import  MD5 from "./crypto.js"
 
@@ -12,9 +12,9 @@ constructor(s , api) {
    this.state = s
    this.APIService = api
    this.dialog = new Dialog(this.closeLoginDialog)
-   this.phoneNo = ""
-   this.otp = ""
    this.userName = ""
+   this.otp = ""
+   this.name = ""
    this.needRegister=false
    this.baziigramTime = 60
    this.baziigramIv = null
@@ -36,8 +36,8 @@ showLoginNode(){
 
 renderLoginNode(){
    let loginNode = document.createElement("div")
-   let phoneNo = new Input(AppConfig.dictionary.phoneNo[this.state.language],"",11,"phoneNo",(v)=>this.changeValue("phoneNo" , v) , mobileValidator,"tel",AppConfig.dictionary.phoneNo[this.state.language])
-   let userNameInput = new Input(AppConfig.dictionary.username[this.state.language],"",30,"userName",(v)=>this.changeValue("userName" , v) , userNameValidator,"text",AppConfig.dictionary.username[this.state.language])
+   let userName = new Input(AppConfig.dictionary.username[this.state.language],"",50,"userName",(v)=>this.changeValue("userName" , v) , userNameValidator,"text",AppConfig.dictionary.username[this.state.language])
+   let nameInput = new Input(AppConfig.dictionary.name[this.state.language],"",30,"name",(v)=>this.changeValue("name" , v) , nameValidator,"text",AppConfig.dictionary.name[this.state.language])
    let registerNode = document.createElement("div")
 
 	if(this.needRegister==false)
@@ -46,10 +46,10 @@ renderLoginNode(){
 	registerNode.id="register";
 	/* registerNode.innerHTML = `<img id="profileImg" onclick="ProfilePage.showProfileImages('register');" src="${AppConfig.baseUrl}/images/profileImages/3.png" width="20%" style="margin:auto;border-radius:50%;margin-bottom:10px">
 		<div class="text-center my-3" >می توانید عکس پروفایل خود را تغییر دهید</div>`*/
-	registerNode.appendChild(userNameInput.render())
+	registerNode.appendChild(nameInput.render())
 	loginNode.appendChild(registerNode)
 		 
-    loginNode.appendChild(phoneNo.render())
+    loginNode.appendChild(userName.render())
 	const button = document.createElement("button");
 	button.classList.add("ok-btn")
 	button.addEventListener('click',this.loginOrRegister)
@@ -87,31 +87,11 @@ showVerificationNode ()
 
 }
 
-signeUpService(phoneNo,userName){
-   let deviceId = MD5(generateUUid());
-   this.state.setState({user:{deviceId,userName,logo:3,userName}})
-   let body= {
-      "phoneNo": phoneNo,
-      "deviceId": deviceId,
-      "logo": 3,
-      "userName": userName
-        }
-   this.APIService.post(body,AppConfig.apiUrls.UserRegister,this.showTimer)
 
-    }
+signeInService(userName){
+      let body= {userName}
+      let cb=(data)=>this.showTimer()
 
-signeInService(phoneNo){
-      let body= {phoneNo:phoneNo}
-      let cb=(data)=>{
-      if(data && data.code == 1001)
-          {alert("شما باید ابتدا ثبت نام کنید");
-		   this.needRegister=true
-           document.getElementById('register').style.display="block"
-           return
-           }
-      else
-       this.showTimer()
-        }
 this.APIService.post(body,AppConfig.apiUrls.UserLogin,cb)
 
 }
@@ -123,18 +103,12 @@ verifyUser=(callback=null)=>
 
        
    let body= {
-   "phoneNo": this.phoneNo,
-   "otp": this.otp,
-   "deviceId":  MD5(generateUUid())
+   "userName": this.userName,
+   "oTP": this.otp,
              }
 
    let cb=(data)=>{
-      this.state.setState({user: {
-        coins: data.coins,
-        logo: data.logo,
-        token: data.token,
-        userName: data.userName,
-                }})
+      this.state.setState({user: data})
 
    localStorage.setItem('user', JSON.stringify(this.state.user));
    window.top.postMessage(this.state.user,"https://baziigram.com");
@@ -146,8 +120,12 @@ verifyUser=(callback=null)=>
 			
     if(this.APIService.queue.length>0)
 		{
+		document.getElementById('dialogContent').innerHTML=""
+		setTimeout(()=>{
 		let item = this.APIService.queue[this.APIService.queue.length-1];
 		item.api(item.arguments.body,item.arguments.url,item.arguments.cb);
+		},1000)
+
 		}
                 
     else
@@ -186,14 +164,12 @@ showTimer(){
 	
 loginOrRegister =()=>
 {
-	if((userNameValidator(this.userName)==false && this.needRegister==true) || mobileValidator(this.phoneNo)==false)
+	if(userNameValidator(this.userName)==false )
 		return
 	
-	 if(this.needRegister==false)
-	this.signeInService(this.phoneNo)
+	this.signeInService(this.userName)
 	
-	else
-	this.signeUpService(this.phoneNo,this.userName)
+
 }
 
 

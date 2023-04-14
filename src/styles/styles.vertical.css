@@ -228,7 +228,15 @@ z-index: 5 !important;
 	background-size: 100% 100%;
 }
 
-#leaderboardMenu , #profileMenu , #leaderboardMenu:focus , #profileMenu:focus , #leaderboardMenu:active , #profileMenu:active
+#AwardsMenu
+{
+	background: url('https://games.baziigram.com/SDK/images/award-menu.png') no-repeat center center;
+	background-size: 100% 100%;
+}
+
+#leaderboardMenu , #profileMenu , #leaderboardMenu:focus ,
+#AwardsMenu , #profileMenu:focus , #AwardsMenu:focus , #leaderboardMenu:active , #profileMenu:active ,
+#AwardsMenu:active
 {
 	position: absolute;
 	width: 50px;
@@ -250,6 +258,12 @@ z-index: 5 !important;
 .show-menu ~ #leaderboardMenu
 {
 	bottom: 116px !important;
+	transition: all .5s;
+}
+
+.show-menu ~ #AwardsMenu
+{
+	bottom: 174px !important;
 	transition: all .5s;
 }
 
@@ -860,6 +874,12 @@ button:focus , button:active{
 	display: block;
 	margin: auto;
 
+}
+
+.small-logo
+{
+	height: 60px;
+	width: 60px;
 }
 
 

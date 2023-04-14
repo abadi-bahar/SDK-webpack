@@ -1,1 +1,25 @@
-<!doctype html><html><head><meta charset="utf-8"><title>Webpack Output</title><meta name="viewport" content="width=device-width,initial-scale=1"><script defer="defer" src="index.js"></script></head><body></body></html>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Webpack Output</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script defer src="index.js"></script>
+  <script>
+
+    function load()
+    {
+       loadModule({
+            menu:{className:"custom-menu"},
+            help:{className:'custom-help',
+                startAction:()=>{},
+                message:"روح را پیدا کنید، آن را لمس کنید و با کشیدن آن از دست کشیش ها فراریش دهید."},
+            point:{id:'score'},
+
+        })
+    }
+  </script>
+</head>
+<body onload="load();">
+</body>
+</html>

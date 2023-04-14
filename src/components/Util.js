@@ -50,9 +50,23 @@ const timezone = date.getTimezoneOffset()
 const summerStart = (new Date(date.getFullYear()+'-03-21')).getTime();
   const summerEnd = (new Date(date.getFullYear()+'-09-23')).getTime();
 
-if((timezone==-270 && timestamp>=summerStart &&  timestamp<summerEnd) || (timezone==-210 && timestamp<summerStart))
+//  condition for  timezone if time changes at 1th farvardin and 1th mehr
+//if((timezone==-270 && timestamp>=summerStart &&  timestamp<summerEnd) || (timezone==-210 && timestamp<summerStart))
+
+if(timezone==-210)
 return "fa"
 
 return "en"
 
+}
+
+export function needMarquee(text){
+const vw = Math.min(Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0) , 900)
+
+if (text.length*8 > Math.floor((vw-40)*0.55))
+      return `<marquee behavior="scroll" scrollamount="2" direction="right">
+          ${text}
+        </marquee>`
+
+ return text
 }
