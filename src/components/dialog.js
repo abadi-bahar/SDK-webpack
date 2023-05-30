@@ -1,5 +1,5 @@
 import {getLanguage} from "./Util.js"
-
+import {AppConfig} from "./config.js"
 export default class Dialog{
 
 constructor(close=()=>{})
@@ -55,12 +55,15 @@ closeDialog(id,showMainDialog=true)
     dialogNode.id="dialogContainer"
     dialogNode.style.display="none"
     dialogNode.setAttribute("lang", language);
-    dialogNode.innerHTML = `<div class="${dir}">
-			<button id="closeBtn" class="close-btn"></button>
+    dialogNode.innerHTML = `
+    <img  class="papiroos-top" src ="${AppConfig.baseUrl}/images/papiroos-top.png"/>
+    <div class="papiroos-middle">
+			<div class="w-100 text-left"><button id="closeBtn" class="close-btn"></button></div>
             <div id="loading" style="display:none;" class="loader"></div>
-			<div id="dialogContent" class="text-center mx-3 mb-3 px-2" style="overflow:auto;max-height:350px;margin-top:50px" >
+			<div id="dialogContent" class="text-center mx-0 mb-0 px-2" style="overflow:auto;max-height:300px;margin-top:10px" >
 				</div>
-				</div>`
+				</div>
+				<img  class="papiroos-bottom" src ="${AppConfig.baseUrl}/images/papiroos-bottom.png"/>`
     if(typeof document.body !== 'undefined'){
     body.appendChild(dialogNode)
     this.dialog = document.getElementById("dialogContainer")

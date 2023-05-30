@@ -45,7 +45,7 @@ getLeaderboard()
 					})
 				}
 			else
-				html=`<div>${AppConfig.dictionary.noRecord[this.state.language]}</div>`
+				html=`<div class="my-2">${AppConfig.dictionary.noRecord[this.state.language]}</div>`
 	         leaderboardNode.innerHTML = html
     }
     this.APIService.get(body,AppConfig.apiUrls.GetLeaderboard,cb)

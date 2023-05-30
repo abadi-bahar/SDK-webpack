@@ -20,10 +20,15 @@ onNameChange=(value)=>
     return value
 }
 
-showUserProfile=()=>
+showUserProfile=(getProfile=true)=>
 {
 this.dialog.showDialog();
+
+if(getProfile==true)
 this.getProfile()
+
+else
+this.renderContent()
 }
 
 getProfile=()=>{
@@ -32,13 +37,24 @@ let cb = (data)=>{
 			this.name=data.user.name
             this.logo=data.user.logo
 			this.state.setState({user:{...this.state.user,...data.user}})
-           let profileNode = document.getElementById('dialogContent')
+            this.renderContent()
+        	// this.dialog.showDialog(profileNode);
+        	}
+	}
+	this.APIService.get(null, AppConfig.apiUrls.GetUserProfile, cb)
+
+}
+
+renderContent=()=>
+{
+ let profileNode = document.getElementById('dialogContent')
         		 let dir = this.state.language=="fa" ? "rtl" : "ltr"
         		 profileNode.style.direction="rtl"
         		 let innerNode = document.createElement("div")
         		 let profileImage = document.createElement("img")
         		 profileImage.addEventListener('click',(e)=>{this.showProfileImages()})
         		 profileImage.src = `${AppConfig.baseUrl}/images/profileImages/${this.logo || 3}.png`
+        		 profileImage.id="profileImg"
         		 profileImage.className="profile-image"
         		 profileNode.append(profileImage)
                  let nameInput = new Input(AppConfig.dictionary.name[this.state.language],this.name,30,"name",this.onNameChange , nameValidator,"text",AppConfig.dictionary.name[this.state.language])
@@ -60,11 +76,6 @@ let cb = (data)=>{
              profileNode.append(buttonsContainer)
 
              this.dialog.onclose = ()=>this.closeUserProfile()
-        	// this.dialog.showDialog(profileNode);
-        	}
-	}
-	this.APIService.get(null, AppConfig.apiUrls.GetUserProfile, cb)
-
 }
 
 showProfileImages ()
@@ -79,14 +90,13 @@ img.src = `${AppConfig.baseUrl}/images/profileImages/${image}.png`
 img.addEventListener('click',(e)=>{this.selectImage(image)})
 parent.appendChild(img)
 })
-
+    this.dialog.onclose = ()=>this.showUserProfile(false)
     this.dialog.showDialog(parent)
 
 }
 
  selectImage(id){
     this.logo = parseInt(id)
-    try{document.getElementById("profileImg").src= AppConfig.baseUrl + "/images/profileImages/"+id+".png"}catch(err){}
      document.getElementById("profileLogo").src= AppConfig.baseUrl + "/images/profileImages/"+id+".png"
     this.closeProfileSubMenu();
 }
@@ -98,7 +108,7 @@ closeUserProfile(id)
         this.updateProfile()
 }
 
-updateProfile(name , logo)
+updateProfile()
 {
     let user = this.state.user;
     let body= {
@@ -119,7 +129,7 @@ updateProfile(name , logo)
 
 closeProfileSubMenu()
 {
-    this.dialog.onclose = ()=>this.showUserProfile()
+    this.dialog.onclose = ()=>this.showUserProfile(false)
     this.dialog.closeDialog();
 }
 

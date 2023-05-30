@@ -21,7 +21,7 @@ addMenu()
 let MenuNode = document.createElement("div")
         MenuNode.id = "baziigramMenu"
         let img = document.createElement("img")
-        img.src = 'https://games.baziigram.com/SDK/images/menu.png'
+        img.src = 'https://games.baziigram.com/SDK/images/menu-2.png'
         img.className = "baziigram-menu-icon"
         img.id="menu"
         let body = document.body

@@ -35,13 +35,13 @@ body { margin: 0;
 	  top:0px;
 	  left:0px;
 	  overflow:hidden;			
-	  font-size:5vw;
+	  font-size:1.2em;
 		   }
 
 .play-button , .replay-button{
     height: 50px;
     width: 50px;
-	background:url("https://games.baziigram.com/SDK/images/playButton2.png") no-repeat center center;
+	background:url("https://games.baziigram.com/SDK/images/play-btn2.png") no-repeat center center;
 	display:block;
 	margin:auto;
     background-size: 100% 100%;
@@ -86,33 +86,47 @@ body { margin: 0;
      z-index: 99999;
 
     }
-
-.help{
-	 position: absolute;
-    width:90%;
-	max-width:350px;
-    left:50%;
-    top: 50%;
-	transform:translate(-50%,-50%);
-    text-align: center;
-    color: inherit;
-    padding:85px 20px ;
-	border-radius:8px;
-	border-radius:15px;
-	background-color: #090012;
-	color: #ffffff;
-	border: 1px solid #e600da;
+.phoenix-container
+{
+	width: 85%;
+	max-width: 450px;
+	top: -100%;
+	left:50%;
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	transform: scale(0,0);
+	animation-name: float-dialog ;
+	animation-duration: 2s;
+	animation-timing-function: linear;
+	animation-fill-mode: forwards;
+	animation-iteration-count: 1;
+	max-height: 100%;
+}
+.help {
+	margin: -6% auto 0px auto;
+	width:100%;
+	text-align: center;
+    color: #212120;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-      }
+	animation-name: float ;
+	animation-duration: 4s;
+	animation-timing-function: linear;
+	animation-fill-mode: forwards;
+	animation-iteration-count: infinite;
+	   }
 
 
 
 .timer,.point{
-	background-image: linear-gradient(#290224 ,#3d0536 , #5e0d54 , #6e1362 ,  #993f8e ) !important;
+	/*background-image: linear-gradient(#fccb7e ,#fbb23f , #f9bb5b , #fccb7e ,  #fff0db ) !important;*/
+	background-color: #fde8c9;
 	border-radius: 17px;
-	color: #ffffff !important;
+	color: #212120 !important;
 	width:150px;
     height: 40px;
     color:inherit;
@@ -156,7 +170,7 @@ body { margin: 0;
     height: 100%;
     width:100%;
 	 background-color:#efeeeb;
-    z-index: 99999;
+    z-index: 99998;
 	display:none;
 	overflow:hidden;
 	padding:8px;
@@ -217,20 +231,20 @@ z-index: 5 !important;
 
 #leaderboardMenu
 {
-	background: url('https://games.baziigram.com/SDK/images/leaderboard2.png') no-repeat center center;
+	background: url('https://games.baziigram.com/SDK/images/leaderboard-2.png') no-repeat center center;
 	background-size: 100% 100%;
 
 }
 
 #profileMenu
 {
-	background: url('https://games.baziigram.com/SDK/images/empty.png') no-repeat center center;
+	background: url('https://games.baziigram.com/SDK/images/empty-2.png') no-repeat center center;
 	background-size: 100% 100%;
 }
 
 #AwardsMenu
 {
-	background: url('https://games.baziigram.com/SDK/images/award-menu.png') no-repeat center center;
+	background: url('https://games.baziigram.com/SDK/images/prize-2.png') no-repeat center center;
 	background-size: 100% 100%;
 }
 
@@ -268,9 +282,10 @@ z-index: 5 !important;
 }
 
 #dialogContainer{
+	z-index: 99999;
 	position:absolute;
-	width:90%;
-	max-width:350px;
+	width:85%;
+	max-width:450px;
     left:50%;
     top: 50%;
 	max-height:85%;
@@ -279,27 +294,28 @@ z-index: 5 !important;
 	transform-origin:center;
 	color:inherit;
 	z-index:99999;
-	direction:rtl;
-	border-radius:8px;
 	text-align: center;
-	background-color: #090012;
-	color: #ffffff;
-	border: 1px solid #e600da;
+	color: #212120;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
 [lang=en]{
 	font-family:merriweather !important;
 	letter-spacing: 0.09rem !important;
 	line-height: 25px !important;
-	font-size: 0.9rem !important;
+	/*font-size: 0.9rem !important;*/
 }
 
 [lang=fa]{
 	font-family:bKamran !important;
-	line-height: 30px !important;
+	line-height: 1.6em !important;
+	letter-spacing: 0 !important;
 }
 
 
@@ -318,12 +334,12 @@ background-color:rgba(170, 141, 107,0.8) !important;
 	background-image:none !important;
 }
 .hide-dialog {
- -webkit-animation: hide-dialog 500ms ease-in-out 1 alternate;
-  -moz-animation: hide-dialog 500ms ease-in-out 1 alternate;
-  animation: hide-dialog 500ms ease-in-out 1 alternate;
+ -webkit-animation: hide-dialog 500ms ease-in-out 1s alternate;
+  -moz-animation: hide-dialog 500ms ease-in-out 1s alternate;
+  animation: hide-dialog 500ms ease-in-out 1s alternate;
 	animation-fill-mode:forwards;
 	display:block !important;
-	
+
 }
 .show-dialog{
 	-webkit-animation: show-dialog 500ms ease-in-out 1 alternate;
@@ -464,30 +480,31 @@ button:focus , button:active{
     padding-top:60px;
 	max-width:580px;
 }
-.ok-btn , .cancel-btn{
+.ok-btn , .cancel-btn , .secondary-btn , .login-btn{
+	content: "";
 	height:40px;
 	border:none;
 	margin:16px auto;
 	display:block;
 	outline: none;
-	color:#ffffff;
-	background-color:#fa00bb !important;
+	color: #212120;
+	background-color:#f59536 !important;
 	border-radius:8px;
 	padding: 5px 8px;
-	content: "";
 	font-size:0.9rem;
 	position: relative;
 	min-width: 100px;
 	font-family: inherit;
+
 }
 
 .cancel-btn
 {
 	background-color: #a4b3b6 !important;
-	color: #fa00bb !important;
+	color: #212120 !important;
 }
 
-.ok-btn:before , .cancel-btn:before{
+.ok-btn:before , .cancel-btn:before , .secondary-btn:before , .login-btn:before{
 	background-color: initial;
 	background-image: linear-gradient(#fff 0, rgba(255, 255, 255, 0) 100%);
    border-radius: 125px !important;
@@ -507,14 +524,12 @@ button:focus , button:active{
 }
 .close-btn
 {
-	background-image: url("https://games.baziigram.com/SDK/images/close2.png");
+	background-image: url("https://games.baziigram.com/SDK/images/close-btn2.png");
 	background-size: 100% 100%;
 	width:40px;
 	height:40px;
-	position:absolute;
-	left:5px;
-	top:5px;
 	border:none;
+	margin: 0px auto 0px 5px;
 	border-width: 0px;
     outline: none;	
 	background-color:transparent;
@@ -522,7 +537,7 @@ button:focus , button:active{
 
 .loader {
   border: 6px solid #f3f3f3; 
-  border-top: 6px solid #42f5f2;
+  border-top: 6px solid #d8c3de;
   border-radius: 50%;
   width: 30px;
   height: 30px;
@@ -599,9 +614,7 @@ button:focus , button:active{
 	width: 90%;
     margin: 0px auto;
     padding: 8px 16px;
-    font-size: 4vw;
-	line-height: 25px;
-	-webkit-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
@@ -669,9 +682,25 @@ button:focus , button:active{
   z-index: 2;
 }
 
+.phoenix-help
+{
+	z-index: 1;
+	margin:0px auto;
+	position: relative;
+	width: 90%;
+	max-width: 450px;
+	background-color: transparent;
+	animation-name: float ;
+	animation-duration: 4s;
+	animation-timing-function: linear;
+	animation-fill-mode: forwards;
+	animation-iteration-count: infinite;
+
+}
+
 @keyframes float {
   0% {
-    ] transform: translatey(0px);
+     transform: translatey(0px);
   }
  
   50% {
@@ -681,6 +710,26 @@ button:focus , button:active{
     transform: translatey(0px);
   }
 }
+
+@keyframes float-dialog {
+	0% {
+		top:-100%;
+		left:50%;
+		transform: translate(-50% , 100%) scale(0,0);
+	}
+
+	50% {
+		top:-50%;
+		left:50%;
+		transform: translate(-50% , 100%) scale(.5,.5);
+	}
+	100% {
+		top:50%;
+		left:50%;
+		transform: translate(-50% , -50%) scale(1,1);
+	}
+}
+
 
 #gameOverContent{
 	z-index:1;
@@ -704,8 +753,8 @@ button:focus , button:active{
 .baziigram-input {
 	direction: rtl;
 	width: 96%;
-	color: #ffffff;
-	border: 1px solid #e600da;
+	color: #212120;
+	border: 1px solid #8a8784;
 	height: 40px;
 	border-radius: 5px;
 	padding: 0px 2%;
@@ -733,11 +782,11 @@ button:focus , button:active{
 .input-container > label {
 	top: 8px;
 	position: absolute;
-	background-color: #090012;
+	background-color: transparent;
 	padding: 0px 5px;
 	transition: 0.2s;
 	pointer-events: none;
-	color: #a4b3b6;
+	color: #595857;
 	font-size: 0.8rem;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -746,8 +795,8 @@ button:focus , button:active{
 
 .baziigram-input:focus,
 .baziigram-input:active {
-	color: #ffffff ;
-	border: 1px solid #e600da;
+	color: #212120 ;
+	border: 1px solid #212120;
 	background:transparent !important;
 	transition: all 0.3s ease-in;
 	height: 40px;
@@ -767,7 +816,8 @@ button:focus , button:active{
 .baziigram-input:active ~ label {
 	position: absolute;
 	top: -12px;
-	color: #e600da;
+	background-color: #fccc80;
+	color: #212120;
 	transition: all 1s;
 	transition: all;
 	transition-duration: 300ms;
@@ -778,8 +828,9 @@ button:focus , button:active{
 
 .baziigram-input:not(:placeholder-shown) ~ label {
 	position: absolute;
+	background-color: #fccc80;
 	top: -12px;
-	color: #e600da;
+	color: #212120;
 	margin-bottom: 0px;
 	font-size: 0.8rem;
 	justify-content: space-between;
@@ -796,7 +847,7 @@ button:focus , button:active{
 
 .baziigram-input:invalid,
 .baziigram-input:focus:invalid {
-	color: #ffffff;
+	color: #212120;
 	border-color: #ff0000;
 }
 
@@ -878,8 +929,8 @@ button:focus , button:active{
 
 .small-logo
 {
-	height: 60px;
-	width: 60px;
+	height: 50px;
+	width: 50px;
 }
 
 
@@ -905,4 +956,66 @@ button:focus , button:active{
 .level-map
 {
 	max-height: calc((100vh - 30vw)/3);
+}
+
+.video
+{
+	display: block;
+	margin: 0px auto;
+	width:100%;
+	height:100%;
+	max-width: 400px;
+}
+
+.papiroos-top , .papiroos-bottom
+{
+	width: 100%;
+	max-height: 35px;
+}
+
+
+.papiroos-middle , .hide-dialog>papiroos-middle
+{
+	background-image: url("https://games.baziigram.com/SDK/images/papiroos-middle.png");
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: 100% 100%;
+	overflow: auto;
+	padding:0px 10% ;
+    max-height: 0px;
+	transition: all 1s;
+	overflow: auto;
+}
+
+
+.open-papiroos ~ .papiroos-bottom , .show-dialog > .papiroos-bottom
+{
+	display: block;
+}
+.open-papiroos.papiroos-middle , .show-dialog > .papiroos-middle{
+	max-height: 60vh;
+}
+
+#help-papiroos-middle
+{
+	padding: 0px 13%;
+}
+
+#help-papiroos-middle.open-papiroos
+{
+	padding: 8px 13%;
+}
+
+.login-btn
+{
+	background-color: #fa00bb !important;
+	color: #ffffff !important;
+	margin: 0px auto !important;
+}
+
+.secondary-btn
+{
+	background-color: #a4b3b6 !important;
+	color: #fa00bb !important;
+	margin: 0px auto !important;
 }

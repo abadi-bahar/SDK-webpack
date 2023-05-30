@@ -2,6 +2,7 @@ import {AppConfig} from "./config.js"
 import * as Alert from "./alert.js"
 import Login from "./page.login.js"
 import {getLanguage} from "./Util.js"
+import Dialog from "./dialog.js"
 
 export default class APIService  {
 
@@ -10,6 +11,7 @@ constructor(s){
     this.language = getLanguage()
     this.state = s
     this.login = new Login(s , this)
+    this.dialog = new Dialog()
 }
 
 
@@ -18,7 +20,7 @@ get=(body, url, cb = ()=>{})=>{
      fetch(AppConfig.apiBaseUrl + url + this.createQueryString(body),
        {
         method: "GET",
-        headers: {'Authorization':"Bearer " + this.state.user.accessToken ,  'Language':this.language}
+        headers: {'Authorization':"Bearer " + this.state.user.accessToken,  'Language':this.language}
         }).then((response)=> {
             Alert.loading(false)
             if (response) {
@@ -44,7 +46,8 @@ get=(body, url, cb = ()=>{})=>{
 
    }).catch(error => {
             Alert.loading(false)
-            alert(error.message || error);
+              let body = `<p class="text-center text-danger m-2">${error.message || error}</p>`
+              return this.dialog.showDialog(body);
         })
     }
 
@@ -85,7 +88,8 @@ post=(body, url, cb)=>{
 
         }).catch(error => {
             Alert.loading(false)
-            alert(error.message || error);
+            let body = `<p class="text-center text-danger m-2">${error.message || error}</p>`
+            return this.dialog.showDialog(body);
         })
     }
 
@@ -125,7 +129,8 @@ patch=(body, url, cb)=>{
 
   }).catch(error => {
             Alert.loading(false)
-            alert(error.message || error);
+            let body = `<p class="text-center text-danger m-2">${error.message || error}</p>`
+            return this.dialog.showDialog(body);
         })
     }
 
@@ -145,7 +150,7 @@ createQueryString=(params)=>{
         return ""
     }
 
-unAthorizationHandler=(request , retryCounter=0)=>{
+unAthorizationHandler=(request , retryCounter=0 , timeout=3000)=>{
         if(request != null)
         this.queue.push(request);
 
@@ -163,13 +168,13 @@ unAthorizationHandler=(request , retryCounter=0)=>{
             	setTimeout(()=>{
             	let item = this.queue[this.queue.length-1];
             	item.api(item.arguments.body,item.arguments.url,item.arguments.cb);
-            	},1000)
+            	},timeout)
 
              }
            }
 
         else if(data.status != 200 && retryCounter<3)
-        return this.unAthorizationHandler(null , retryCounter+1)
+        return  setTimeout(()=>this.unAthorizationHandler(null , retryCounter+1),timeout)
 
          else
          this.login.showLoginNode();
@@ -186,14 +191,18 @@ parseResponse=(res,cb)=>
 {
 res.json().then((data)=>{
 if(data.code==400 && data.message)
-      return alert(data.message);
+{
+let body = `<p class="text-center text-danger m-2">${data.message}</p>`
+return this.dialog.showDialog(body);
+}
 
   else
   return cb(data)
 
     }).catch(error => {
    Alert.loading(false)
-   alert(error.message || error);
+   let body = `<p class="text-center text-danger m-2">${error.message || error}</p>`
+   return this.dialog.showDialog(body);
   })
 }
 

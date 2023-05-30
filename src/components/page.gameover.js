@@ -9,6 +9,7 @@ constructor(s , api ) {
    this.state = s
    this.APIService = api
    this.dialog = new Dialog()
+   this.request={}
 }
 
 addGameOverNode()
@@ -28,9 +29,11 @@ addGameOverNode()
      <img class="moon" src="${AppConfig.baseUrl}/images/moon6.png"/>
        <button  class="replay-button" onclick="removeBanner();"  ></button>
       </div>
+
+      <div id="loading2" class="h-100 flex-fill flex-column justify-content-center"><div  style="display:block;margin:auto;" class="loader"></div></div>
       <div class="flex-fill d-flex flex-column" id="gameResult"></div>
     </div>`
-    html+=`<div id="loading2" class="h-100 d-flex flex-column justify-content-center"><div  style="display:block;margin:auto;" class="loader"></div></div>`
+
 
     gameOverNode.innerHTML = html
     body.appendChild(gameOverNode)
@@ -44,6 +47,7 @@ service=(score,duration)=>
        "duration": duration,
         "score":this.state.score
             }
+this.request = {body, url:AppConfig.apiUrls.GameLog}
 this.APIService.post(body,AppConfig.apiUrls.GameLog,(data)=>this.showGameOverResult(data))
 
 }
@@ -57,7 +61,7 @@ recordAlternativeLog=(userData,duration,callback)=>
 	  "superGameId":48
 			
 }
-
+this.request = {body, url:AppConfig.apiUrls.GameAlternativeLog}
 this.APIService.post(body,AppConfig.apiUrls.GameAlternativeLog,(data)=>{
 
    if(data.user)
@@ -77,9 +81,9 @@ recordGameLevelLog=(score,duration)=>{
       "gameId": this.state.gameId,
       "duration": duration,
       "score":this.state.score,
-	  "superGameId":48
+	  "superGameId":46
         }
-
+this.request = {body, url:AppConfig.apiUrls.GameLevelLog}
 this.APIService.post(body,AppConfig.apiUrls.GameLevelLog,(data)=>{
 	if(data.user)
 	  {
@@ -110,20 +114,32 @@ showGameOverResult=(data,score)=>
  </div>`
 
 let buttonsContainer = document.createElement("div")
-buttonsContainer.className = "d-flex flex-row justify-content-center align-items-center"
+buttonsContainer.className = "d-flex flex-row justify-content-center align-items-center mt-2"
 
 
 if(data.nextLevel)
 {
 let nextLevelDiv = document.createElement("div")
  nextLevelDiv.className=" d-flex w-100 flex-fill flex-column justify-content-between  align-items-center"
+let nextLevelInnerHTML=""
 
-nextLevelDiv.innerHTML=`<img  class="level-map"  src="${data.nextLevel.map}"/>
-       <div  class="next-level-desc flex-wrap">${data.nextLevel.description}</div>`
+if(data.nextLevel.video != null)
+nextLevelInnerHTML += `<div  class="w-100 flex-wrap d-flex flex-column justify-content-center">
+<video id="videoplayer" class="video" poster="${data.nextLevel.map}"  controls>
+  <source src="${data.nextLevel.video}" type="video/mp4"/>
+Your browser does not support the video tag.
+</video>
+</div>`
 
+else if(data.nextLevel.description!=null)
+nextLevelInnerHTML += `<img  class="level-map"  src="${data.nextLevel.map}"/>
+<div  class="next-level-desc flex-wrap">${data.nextLevel.description}</div>`
+
+
+ nextLevelDiv.innerHTML = nextLevelInnerHTML;
  let nextLevelBtn = document.createElement("button")
  nextLevelBtn.innerText = AppConfig.dictionary.nextLevel[this.state.language]
- nextLevelBtn.className = "ok-btn"
+ nextLevelBtn.className = "login-btn"
  nextLevelBtn.addEventListener('click',(e)=>{
  if(data.nextLevel.link && data.nextLevel.link!="")
  window.location.href=data.nextLevel.link
@@ -135,6 +151,17 @@ buttonsContainer.appendChild(nextLevelBtn)
    nextLevelDiv.appendChild(buttonsContainer)
 
 gameOverNode.appendChild(nextLevelDiv)
+
+if(data && data.nextLevel && data.nextLevel.video != null)
+document.getElementById("videoplayer").addEventListener("playing", event => {
+    const player = document.getElementById("videoplayer");
+    if (player.requestFullscreen)
+        player.requestFullscreen();
+    else if (player.webkitRequestFullscreen)
+        player.webkitRequestFullscreen();
+    else if (player.msRequestFullScreen)
+      player.msRequestFullScreen();
+})
 }
 
 
@@ -148,7 +175,7 @@ if(data.code==400 && data.link && data.link!="")
 {
 let shareBtn = document.createElement("button")
 shareBtn.innerText = AppConfig.dictionary.share[this.state.language]
-shareBtn.className = data.nextLevel ? "cancel-btn" : "ok-btn"
+shareBtn.className = (data.nextLevel || data.code==401) ? "secondary-btn" : "login-btn"
 shareBtn.addEventListener('click',(e)=>{this.share(data.link)})
 
 buttonsContainer.appendChild(shareBtn)
@@ -158,7 +185,7 @@ if(data.code==401 )
 {
 let loginBtn = document.createElement("button")
 loginBtn.innerText = AppConfig.dictionary.login[this.state.language]
-loginBtn.className = data.nextLevel ? "cancel-btn" : "ok-btn"
+loginBtn.className = data.nextLevel ? "secondary-btn" : "login-btn"
 loginBtn.addEventListener('click',(e)=>{this.authorization(this.state.score)})
 buttonsContainer.appendChild(loginBtn)
 }
@@ -216,7 +243,7 @@ authorization=(score)=>{
          "score":score
              }
        
-this.APIService.queue.push({api: this.APIService.post, arguments: {body, url:AppConfig.apiUrls.GameLog,cb: (data)=>{
+this.APIService.queue.push({api: this.APIService.post, arguments: {...this.request,...{cb: (data)=>{
 	this.dialog.closeDialog();
 
 if(data.user)
@@ -225,7 +252,8 @@ if(data.user)
    localStorage.setItem('user',JSON.stringify(this.state.user))
    window.top.postMessage(this.state.user,"https://baziigram.com")
    window.history.back();
-}
+          }
+     }
 }
   });
 
@@ -246,7 +274,7 @@ endGame(score)
 {
     this.state.endTime = new Date().getTime();
 	this.state.setState({endTime:this.state.endTime,score})
-	document.getElementById('loading2').style.display="block"
+	document.getElementById('loading2').style.display="flex"
     document.getElementById("gameOver").style.display="block";
     this.service(score , this.state.endTime - this.state.startTime)
 	try{
@@ -269,7 +297,7 @@ endGameLevel(score)
 {
     this.state.endTime = new Date().getTime();
 	this.state.setState({endTime:this.state.endTime,score})
-	document.getElementById('loading2').style.display="block"
+	document.getElementById('loading2').style.display="flex"
     document.getElementById("gameOver").style.display="block";
     this.recordGameLevelLog(score , this.state.endTime - this.state.startTime)
 	try{

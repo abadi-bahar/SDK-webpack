@@ -62,12 +62,15 @@ window.loadModule = function (setting={}){
     helpNode.classList.add("start-playing")
     setting.help = setting.help || {}
     let innerNode = document.createElement("div")
-    innerNode.className = `${dir} help d-flex flex-column justify-content-center`
-    innerNode.innerHTML = setting.help.message || setting.help.body ||  ""
-    let playBtn = document.createElement("button")
-     playBtn.className = "play-button mt-2"
-     playBtn.addEventListener('click',removeBanner)
-    innerNode.appendChild(playBtn)
+    let papiroosNode = document.createElement("div")
+    papiroosNode.className = "help d-flex flex-column justify-content-center"
+    innerNode.className = `${dir} phoenix-container`
+    innerNode.innerHTML = `<img  class="phoenix-help" src ="${AppConfig.baseUrl}/images/phoenix.png"/>`
+    papiroosNode.innerHTML =`<img  class="papiroos-top" src ="${AppConfig.baseUrl}/images/papiroos-top.png"/>
+    <div id="help-papiroos-middle" class="papiroos-middle">${setting.help.message || setting.help.body ||  ""}</div>
+    <img  class="papiroos-bottom" src ="${AppConfig.baseUrl}/images/papiroos-bottom.png"/>`
+     innerNode.addEventListener('animationend',showPapiroos)
+    innerNode.appendChild(papiroosNode)
     helpNode.appendChild(innerNode)
 
     body.appendChild(helpNode)
@@ -90,6 +93,18 @@ window.loadModule = function (setting={}){
 	}catch(err){}
 
     }
+}
+
+function showPapiroos(e)
+{
+if(e.animationName=="float-dialog"){
+let el = document.getElementById("help-papiroos-middle")
+ let playBtn = document.createElement("button")
+     playBtn.className = "play-button mt-2"
+     playBtn.addEventListener('click',removeBanner)
+    el.appendChild(playBtn)
+el.classList.add("open-papiroos")
+}
 }
 
 window.removeBanner = function(action)

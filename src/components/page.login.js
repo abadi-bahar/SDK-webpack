@@ -16,7 +16,7 @@ constructor(s , api) {
    this.otp = ""
    this.name = ""
    this.needRegister=false
-   this.baziigramTime = 60
+   this.baziigramTime = 120
    this.baziigramIv = null
  }
 
@@ -116,7 +116,7 @@ verifyUser=(callback=null)=>
 			
 	this.clearIntervals()
 
-    this.baziigramTime = 60
+    this.baziigramTime = 120
 			
     if(this.APIService.queue.length>0)
 		{
@@ -140,7 +140,7 @@ this.APIService.post(body,AppConfig.apiUrls.UserVerify,cb)
 
 showTimer(){
     this.showVerificationNode()
-    this.baziigramTime = 60
+    this.baziigramTime = 120
     this.baziigramIv = setInterval(()=>{
 	let timerDiv = document.getElementById('verificationTimer')
     if(this.baziigramTime>0)
@@ -156,7 +156,7 @@ showTimer(){
 
 		this.clearIntervals()
 
-   this.baziigramTime = 60
+   this.baziigramTime = 120
         }
     },1000)
     return

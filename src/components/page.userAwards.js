@@ -8,7 +8,7 @@ constructor(s , api , profile=null) {
    this.state = s
    this.APIService = api
    this.profilePage = profile
-   this.dialog = profile != null ? new Dialog(this.profilePage.showUserProfile) : new Dialog();
+   this.dialog = profile != null ? new Dialog(()=>this.profilePage.showUserProfile(false)) : new Dialog();
    }
 
 

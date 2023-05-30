@@ -50,7 +50,7 @@ apiBaseUrl:"https://api.baziigram.com/api/",
 		GetPrize:"Market/v1/ConfirmAward",
 		GetUserProfile:"Market/v1/UserProfile",
 		GameAlternativeLog:"GameAlternativeLog",
-		GameLevelLog:"GameLevelLog",
+		GameLevelLog:"Game/v1/LevelLog",
 		RefreshToken:"v1/User/Game/RefreshToken"
 
     },

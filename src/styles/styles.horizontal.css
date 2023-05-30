@@ -1,12 +1,12 @@
 @media screen and (min-aspect-ratio: 13/9) {
+	.phoenix-help
+	{
+		max-width: 50% !important;
+	}
 
-	.referal-link{
-	 font-size: 4vh !important;
-}
 
            
-body {font-size:4vh !important;		
-		   }
+body {font-size:1.2em !important;}
 
 
 .timer,.point{
@@ -73,9 +73,20 @@ body {font-size:4vh !important;
 		max-height: 30vh !important;
 		margin-top: 10px !important;
 	}
+
+	.referal-link{font-size: 1.2em !important;}
 }
 
 
+@media screen and (max-device-width: 1024px) and (orientation: landscape) {
 
+	body {font-size:1em !important;}
+
+	.phoenix-container
+	{
+		max-width: 350px !important;
+	}
+	.referal-link{font-size: 1em !important;}
+}
 
 
