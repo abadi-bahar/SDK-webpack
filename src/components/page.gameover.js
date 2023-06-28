@@ -1,6 +1,7 @@
 import {AppConfig} from "./config.js"
 import Dialog from "./dialog.js"
 import  {gameanalytics} from "gameanalytics"
+import "../styles/firework.css"
 
 export default  class GameoverPage
 {
@@ -30,7 +31,8 @@ addGameOverNode()
        <button  class="replay-button" onclick="removeBanner();"  ></button>
       </div>
 
-      <div id="loading2" class="h-100 flex-fill flex-column justify-content-center"><div  style="display:block;margin:auto;" class="loader"></div></div>
+      <div id="loading2" class="h-100 flex-fill flex-column justify-content-center">
+      <div  style="display:block;margin:auto;" class="loader"></div></div>
       <div class="flex-fill d-flex flex-column" id="gameResult"></div>
     </div>`
 
@@ -58,7 +60,7 @@ recordAlternativeLog=(userData,duration,callback)=>
       "gameId": this.state.gameId,
       "duration": duration,
       "data":userData,
-	  "superGameId":48
+	  "superGameId":46
 			
 }
 this.request = {body, url:AppConfig.apiUrls.GameAlternativeLog}
@@ -100,17 +102,21 @@ this.showGameOverResult(data,score);
 showGameOverResult=(data,score)=>
 {
  let html=""
+ let unit = AppConfig.dictionary.coin[this.state.language]
   let dir = this.state.language=="fa" ? "rtl" : "ltr"
  let gameOverNode = document.getElementById('gameResult')
  document.getElementById('loading2').style.display="none"
  gameOverNode.innerHTML=""
- gameOverNode.classList.add(`justify-content-${data.nextLevel?'start':'center'}`)
+ gameOverNode.classList.add(`justify-content-${data.nextLevel?'start':'between'}`)
 
 
  if(data.coins != undefined && data.nextLevel==null)
- gameOverNode.innerHTML +=`<div class="d-flex flex-row justify-content-center align-items-start ${dir} flex-fill pt-4">
- <img width="70px" height="70px" src="${AppConfig.baseUrl}/images/coin2.png"/>
+ gameOverNode.innerHTML +=`<div class="phoecoins d-flex flex-row justify-content-center align-items-center ltr  pt-2">
+ <div class="d-flex flex-row justify-content-center align-items-center ${dir} ">
+ <img class="coin" src="${AppConfig.baseUrl}/images/coin2.png"/>
  <div  class="text-warning mx-2 ${dir}" id="yourCoins"></div>
+ </div>
+ <div  class="your-rank  ${dir}" id="yourRank"></div>
  </div>`
 
 let buttonsContainer = document.createElement("div")
@@ -164,6 +170,17 @@ document.getElementById("videoplayer").addEventListener("playing", event => {
 })
 }
 
+if(data.leaderboard && data.leaderboard.length>0)
+{
+
+gameOverNode.appendChild(this.addLeaderboardNode(data.leaderboard))
+let youElement = document.getElementsByName(AppConfig.dictionary.you[this.state.language])[0]
+if(youElement)
+{
+unit=""
+youElement.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
+}
+}
 
 if(data.code == 400 || (data.code == 401 && data.coins>0))
 {
@@ -206,7 +223,7 @@ gameOverNode.style.visibility="visible";
 		window.top.postMessage(this.state.user,"https://baziigram.com")
             
 		if(data.coins>=0 && data.nextLevel==null)
-		this.showEarnedCoins(data.coins,0);
+		this.showEarnedCoins(data.coins,0 , unit);
 		
 try{
    gameanalytics.GameAnalytics.addProgressionEvent(gameanalytics.EGAProgressionStatus.Complete, this.state.gameId, null, null, {...this.state.user,...score});
@@ -228,12 +245,12 @@ if(navigator && navigator.share )
         });
 }
 
-showEarnedCoins=(coins,tempCoins)=>
+showEarnedCoins=(coins,tempCoins , unit="")=>
 {
 
-document.getElementById('yourCoins').innerText=tempCoins + " " + AppConfig.dictionary.coin[this.state.language]  ;
+document.getElementById('yourCoins').innerText=tempCoins + " " + unit ;
 if(coins!=tempCoins)
- setTimeout(()=>{this.showEarnedCoins(coins,tempCoins+1)},1)
+ setTimeout(()=>{this.showEarnedCoins(coins,tempCoins+1 , unit)},1)
 }
 
 authorization=(score)=>{
@@ -260,6 +277,42 @@ if(data.user)
 document.getElementById("gameOver").style.display="none";
 this.APIService.login.showLoginNode()
 						
+}
+
+addLeaderboardNode=(list)=>
+{
+let leaderboard = document.createElement("div")
+leaderboard.className = "flex-fill gameover-leaderboard my-2"
+ let dir = this.state.language == "fa" ? "rtl text-right" : "ltr text-left"
+        let html = ""
+        let textClass="text-light"
+        let yourRank = document.getElementById("yourRank")
+        yourRank.classList.add("ml-5")
+
+		list.map((item,i)=>{
+		textClass="text-light"
+		if(item.name == AppConfig.dictionary.you[this.state.language])
+		{yourRank.innerHTML = `<div class="your-rank">${AppConfig.dictionary.yourRank[this.state.language]} ${i+1}
+		<div class="firework"></div><div class="firework"></div><div class="firework"></div>
+		</div>`
+		textClass="text-warning"
+		}
+        let containerClass="logo-container "
+
+        html += ` <div name="${item.name}"   class="${dir} ${textClass} d-flex flex-row justify-content-between align-items-center px-2 prize-item">`
+        		if(i<3)
+        containerClass += i==0?'gold':(i==1?'silver':'bronze')
+        html +=   `<div class="${containerClass}"><img class="leader-board-logo ${i>2?'small-logo':''}" src="${AppConfig.baseUrl}images/profileImages/${item.logo}.png" /></div>
+             <div style="max-width:30%;overflow-x:hidden;" class="text-right">${item.name}</div>
+              <div class="text-right">${item.score}</div>
+               </div>`
+        					})
+  leaderboard.innerHTML = html
+  try{
+  let phoenix = document.getElementsByClassName("phoenix")[0]
+  phoenix.classList.add("phoenix-near-moon")
+  phoenix.classList.remove("phoenix") }catch(err){}
+  return leaderboard
 }
 	
 goHome ()

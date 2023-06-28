@@ -4,6 +4,12 @@
 		max-width: 50% !important;
 	}
 
+	.phoenix-near-moon
+	{
+		top:45% !important;
+		left:calc(100% - 200px) !important;
+		left:-webkit-calc(100% - 200px) !important;
+	}
 
            
 body {font-size:1.2em !important;}
@@ -43,10 +49,10 @@ body {font-size:1.2em !important;}
 
 .game-header
 {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
+	position: fixed !important;
+	top: 0 !important;
+	left: 0 !important;
+	width: 100% !important;
 }
 
 	.next-level-desc
@@ -82,11 +88,36 @@ body {font-size:1.2em !important;}
 
 	body {font-size:1em !important;}
 
+	.phoenix , .phoenix-near-moon
+	{
+		width: 25% !important;
+		max-width: 150px !important;
+	}
+
 	.phoenix-container
 	{
 		max-width: 350px !important;
 	}
 	.referal-link{font-size: 1em !important;}
+
+	.phoenix-near-moon
+	{
+		top:45% !important;
+		left:calc(100% - 160px) !important;
+		left:-webkit-calc(100% - 160px) !important;
+	}
+
+
+	.coin
+	{
+		height: 50px !important;
+		width: 50px !important;
+	}
+
+	.moon
+	{
+		margin: 30px auto 30px 16px !important;
+	}
 }
 
 

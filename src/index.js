@@ -109,6 +109,12 @@ el.classList.add("open-papiroos")
 
 window.removeBanner = function(action)
 {
+    try{
+      document.getElementById("yourRank").classList.remove("ml-5")
+      let phoenix = document.getElementsByClassName("phoenix-near-moon")[0]
+      phoenix.classList.add("phoenix")
+      phoenix.classList.remove("phoenix-near-moon")
+      }catch(err){}
 	document.getElementsByClassName('start-playing')[0].style.display="none";
 	document.getElementById("gameOver").style.display="none";
 	document.getElementById('gameResult').style.visibility="hidden";

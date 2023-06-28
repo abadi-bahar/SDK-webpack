@@ -88,7 +88,9 @@ apiBaseUrl:"https://api.baziigram.com/api/",
                 shareTxt:{fa:"من با بازی کردن جایزه مورد علاقه م رو گرفتم، تو هم بیا بازی کن و با سکه هات جایزه برنده شو...\r\n " ,
                  en:"I won my favorite prize by playing, come and play and win prizes with your coins...\r\n"},
                  shateTitle:{fa:"بازی کن، جایزه ببر",en:"play and win"},
-                 charge:{fa:"شارژ" , en:"charge"}
+                 charge:{fa:"شارژ" , en:"charge"},
+                 you:{fa:"شما",en:"You"},
+                 yourRank:{fa:"رتبه شما : ", en:"Your rank is "}
 
 
 			   }
