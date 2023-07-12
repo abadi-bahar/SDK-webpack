@@ -8,7 +8,6 @@ import APIService from "./components/service.js"
 import {AppConfig} from "./components/config.js"
 import GameoverPage from "./components/page.gameover.js"
 import {getLanguage} from "./components/Util.js"
-import  {gameanalytics} from "gameanalytics"
 
 
 
@@ -18,7 +17,7 @@ import  {gameanalytics} from "gameanalytics"
  window.getUserLanguage = function(){return getLanguage()}
  window.addEventListener('message',listentOnParent)
  localStorage.removeItem('user');
-
+ const gameanalytics = require("gameanalytics");
 
 function listentOnParent(e)
 {
@@ -75,7 +74,7 @@ window.loadModule = function (setting={}){
 
     body.appendChild(helpNode)
 	const statusBar = new StatusBar(state)
-	const gameoverPage = new GameoverPage(state , api )
+	const gameoverPage = new GameoverPage(state , api ,gameanalytics)
 	statusBar.addTimer()
     statusBar.addPoint()
     const menu = new Menu(state , api)
@@ -125,9 +124,11 @@ window.removeBanner = function(action)
 	state.moduleSettings.help.startAction();
 
 	try{
-	 gameanalytics .GameAnalytics.setEnabledInfoLog(true);
+
+     gameanalytics.GameAnalytics.setEnabledInfoLog(true);
      gameanalytics.GameAnalytics.addProgressionEvent(gameanalytics.EGAProgressionStatus.Start, state.gameId, null, null, state.user);
 	}
 	catch(err){}
+
 
 }

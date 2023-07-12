@@ -1,16 +1,16 @@
 import {AppConfig} from "./config.js"
 import Dialog from "./dialog.js"
-import  {gameanalytics} from "gameanalytics"
 import "../styles/firework.css"
 
 export default  class GameoverPage
 {
 
-constructor(s , api ) {
+constructor(s , api , gameanalytics ) {
    this.state = s
    this.APIService = api
-   this.dialog = new Dialog()
+   this.dialog = new Dialog
    this.request={}
+   this.gameanalytics = gameanalytics
 }
 
 addGameOverNode()
@@ -226,10 +226,10 @@ gameOverNode.style.visibility="visible";
 		this.showEarnedCoins(data.coins,0 , unit);
 		
 try{
-   gameanalytics.GameAnalytics.addProgressionEvent(gameanalytics.EGAProgressionStatus.Complete, this.state.gameId, null, null, {...this.state.user,...score});
+   this.gameanalytics.GameAnalytics.addProgressionEvent(this.gameanalytics.EGAProgressionStatus.Complete, this.state.gameId, null, null, {...this.state.user,...score});
 
     if(data.coins>=0 && data.code==200)
-	gameanalytics.GameAnalytics.addResourceEvent(gameanalytics.EGAResourceFlowType.Source, "Phoecoin", data.coins, "playing", "playing",this.state.user);
+	this.gameanalytics.GameAnalytics.addResourceEvent(this.gameanalytics.EGAResourceFlowType.Source, "Phoecoin", data.coins, "playing", "playing",this.state.user);
 	}
 catch(err){}
 
@@ -331,7 +331,7 @@ endGame(score)
     document.getElementById("gameOver").style.display="block";
     this.service(score , this.state.endTime - this.state.startTime)
 	try{
-      gameanalytics.GameAnalytics.addProgressionEvent(gameanalytics.EGAProgressionStatus.Complete, this.state.gameId, null, null, {...this.state.user,...score});
+      this.gameanalytics.GameAnalytics.addProgressionEvent(this.gameanalytics.EGAProgressionStatus.Complete, this.state.gameId, null, null, {...this.state.user,...score});
 	}
 	catch(err){}
 }
@@ -341,7 +341,7 @@ endAlternativeGame(data,cb)
     this.state.endTime = new Date().getTime();
 	 this.recordGameLevelLog(data , this.state.endTime - this.state.startTime,cb)
 	  try{
-       gameanalytics.GameAnalytics.addProgressionEvent(gameanalytics.EGAProgressionStatus.Complete, this.state.gameId, null, null, {...this.state.user,...data});
+       this.gameanalytics.GameAnalytics.addProgressionEvent(this.gameanalytics.EGAProgressionStatus.Complete, this.state.gameId, null, null, {...this.state.user,...data});
 	    }
 	  catch(err){}
 }
@@ -354,7 +354,7 @@ endGameLevel(score)
     document.getElementById("gameOver").style.display="block";
     this.recordGameLevelLog(score , this.state.endTime - this.state.startTime)
 	try{
-      gameanalytics.GameAnalytics.addProgressionEvent(gameanalytics.EGAProgressionStatus.Complete, this.state.gameId, null, null, {...this.state.user,...score});
+      this.gameanalytics.GameAnalytics.addProgressionEvent(this.gameanalytics.EGAProgressionStatus.Complete, this.state.gameId, null, null, {...this.state.user,...score});
 	}
 	catch(err){}
 }
