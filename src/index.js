@@ -19,15 +19,26 @@ import {getLanguage} from "./components/Util.js"
  localStorage.removeItem('user');
  const gameanalytics = require("gameanalytics");
 
+
 function listentOnParent(e)
 {
 	 if(e.origin.indexOf("https://baziigram.com")>-1) {
-          localStorage.setItem("user",JSON.stringify(e.data))
-		       if(state)
-			   {
-				if(document.getElementsByClassName("start-playing")[0] == undefined)
-				window.loadModule(state.moduleSettings)
-			   }
+	 if(e.data.message=="handleVoice")
+	 {
+	try{ let max = document.getElementsByTagName("audio").length
+	     for(var i=0;i<max;i++){
+	     document.getElementsByTagName("audio")[i].removeAttribute("muted")
+	     document.getElementsByTagName("audio")[i].setAttribute("muted",e.data.mute)
+	      }
+	      } catch(err){}
+	 return
+	 }
+	 localStorage.setItem("user",JSON.stringify(e.data))
+       if(state)
+		{
+		if(document.getElementsByClassName("start-playing")[0] == undefined)
+		window.loadModule(state.moduleSettings)
+		}
 		       
 		 }
 }
@@ -39,6 +50,10 @@ window.loadModule = function (setting={}){
 	 let cacheUser = localStorage.getItem('user')
 	 var queryParams = window.location.href.split('?')
      var gameId = queryParams[1].split('&')[0].replace("gameId=","")
+     if(document.getElementsByTagName("audio")[0])
+     window.top.postMessage({message:"showAudioBtn",display:"block"},"https://baziigram.com")
+     else
+      window.top.postMessage({message:"showAudioBtn",display:"none"},"https://baziigram.com")
 
     state.setState({moduleSettings:setting,gameId,language:getLanguage()})
 	let timeout=0
@@ -74,6 +89,10 @@ window.loadModule = function (setting={}){
 
     body.appendChild(helpNode)
 	const statusBar = new StatusBar(state)
+	try{
+     	gameanalytics.GameAnalytics.setEnabledInfoLog(true);
+     	gameanalytics.GameAnalytics.initialize(AppConfig.tracker[`g-${gameId}`].gk,AppConfig.tracker[`g-${gameId}`].sk);
+    }catch(err){}
 	const gameoverPage = new GameoverPage(state , api ,gameanalytics)
 	statusBar.addTimer()
     statusBar.addPoint()
@@ -86,10 +105,6 @@ window.loadModule = function (setting={}){
 }
 		},timeout)
 
-	try{
-		gameanalytics.GameAnalytics.setEnabledInfoLog(true);
-		gameanalytics.GameAnalytics("initialize", AppConfig.tracker[`g-${gameId}`].gk,AppConfig.tracker[`g-${gameId}`].sk);
-	}catch(err){}
 
     }
 }

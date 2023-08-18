@@ -347,7 +347,7 @@ background-color:rgba(170, 141, 107,0.8) !important;
   -moz-animation: show-dialog 500ms ease-in-out 1 alternate;
   animation: show-dialog 500ms ease-in-out 1 alternate;
 	animation-fill-mode:forwards;
-	display:block !important;
+	display:flex !important;
 }
 
 @-webkit-keyframes hide-dialog {
@@ -998,7 +998,9 @@ button:focus , button:active{
 	display: block;
 }
 .open-papiroos.papiroos-middle , .show-dialog > .papiroos-middle{
-	max-height: 60vh;
+	max-height: 65vh;
+	width: 100%;
+	box-sizing: border-box;
 }
 
 #help-papiroos-middle
